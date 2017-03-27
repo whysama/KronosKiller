@@ -1,19 +1,56 @@
-import React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import {Store} from 'react-chrome-redux';
+/*chrome.runtime.sendMessage({
+  from:    'content',
+  subject: 'showPageAction'
+});*/
 
-import App from './components/app/App';
+import $ from 'jquery';
 
-const proxyStore = new Store({portName: 'example'});
+function getPeriod(oFrameDom) {
+    var sMonth = $("select[name='month']",oFrameDom).val(),
+        sYear = $("select[name='year']",oFrameDom).val(),
+        oDate = new Date(sYear, parseInt(sMonth, 10) - 1, 2),
+        sDate = oDate.toISOString().slice(0, 10).replace(/-/g, ""),
+        iDateStart = parseInt(sDate, 10),
+        iDateEnd = iDateStart + 30;
+    return {
+        start: iDateStart,
+        end: iDateEnd
+    };
+}
 
-const anchor = document.createElement('div');
-anchor.id = 'rcr-anchor';
+function getProjectList(oFrameDom) {
+    var aOptions = [],
+        oPeriod = getPeriod(oFrameDom);
+    for (var i = oPeriod.start; i <= oPeriod.end; i++) {
+        $("select[name='" + i + "'] option:not(:disabled)",oFrameDom).each(function() {
+            if ($(this).val() != "0" && $(this).val() != "") {
+                aOptions.push({
+                    id: $(this).val(),
+                    text: $(this).text()
+                });
+            }
+        });
+        if (aOptions.length > 0) {
+            break;
+        }
+    }
+    return aOptions;
+}
 
-document.body.insertBefore(anchor, document.body.childNodes[0]);
+chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 
-render(
-  <Provider store={proxyStore}>
-    <App/>
-  </Provider>
-  , document.getElementById('rcr-anchor'));
+  if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
+    var oFrameDom = window.frames["main"].document;
+    console.log(getProjectList(oFrameDom));
+    var domInfo = {
+      total:   document.querySelectorAll('*').length,
+      inputs:  document.querySelectorAll('input').length,
+      buttons: document.querySelectorAll('button').length
+    };
+    
+    response(domInfo);
+  
+  }
+
+});
+

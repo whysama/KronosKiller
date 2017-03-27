@@ -1,15 +1,31 @@
 <!doctype html>
 <html class="no-js" lang="">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>RCR Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="popup.js"></script>
 </head>
+
 <body>
-
-<div id="app"></div>
-
-<script src="popup.js"></script>
+    <div id="app"></div>
+    <h3 style="font-weight:bold; text-align:center;">DOM Info</h3>
+    <table border="1" cellpadding="3" style="border-collapse:collapse;">
+        <tr>
+            <td nowrap>Total number of elements:</td>
+            <td align="right"><span id="total">N/A</span></td>
+        </tr>
+        <tr>
+            <td nowrap>Number of input elements:</td>
+            <td align="right"><span id="inputs">N/A</span></td>
+        </tr>
+        <tr>
+            <td nowrap>Number of button elements:</td>
+            <td align="right"><span id="buttons">N/A</span></td>
+        </tr>
+    </table>
 </body>
+
 </html>

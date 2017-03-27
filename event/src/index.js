@@ -1,10 +1,7 @@
-import {createStore} from 'redux';
-import rootReducer from './reducers';
-
-import {wrapStore} from 'react-chrome-redux';
-
-const store = createStore(rootReducer, {});
-
-wrapStore(store, {
-  portName: 'example'
-});
+/*chrome.runtime.onMessage.addListener(function(msg, sender) {
+    // First, validate the message's structure
+    if ((msg.from === 'content') && (msg.subject === 'showPageAction')) {
+        // Enable the page-action for the requesting tab
+        chrome.pageAction.show(sender.tab.id);
+    }
+});*/
