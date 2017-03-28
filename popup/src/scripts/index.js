@@ -1,40 +1,28 @@
-/*import React from 'react';
+import React from 'react';
 import {render} from 'react-dom';
 
 import App from './components/app/App';
 
-import {Store} from 'react-chrome-redux';
-import {Provider} from 'react-redux';
-
-const proxyStore = new Store({
-  portName: 'example'
-});
-
-render(
-    <App />
-  , document.getElementById('app')
-);*/
-
-// Update the relevant fields with the new data
-function setDOMInfo(info) {
-  document.getElementById('total').textContent   = info.total;
-  document.getElementById('inputs').textContent  = info.inputs;
-  document.getElementById('buttons').textContent = info.buttons;
+function renderApp(info) {
+    render(
+        <App projects={info.projects}/>
+      , document.getElementById('app')
+    );
 }
 
 // Once the DOM is ready...
-window.addEventListener('DOMContentLoaded', function () {
-  // ...query for the active tab...
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, function (tabs) {
-    // ...and send a request for the DOM info...
-    chrome.tabs.sendMessage(
-        tabs[0].id,
-        {from: 'popup', subject: 'DOMInfo'},
-        // ...also specifying a callback to be called 
-        //    from the receiving end (content script)
-        setDOMInfo);
+window.addEventListener('DOMContentLoaded', function() {
+            // ...query for the active tab...
+            chrome.tabs.query({
+                        active: true,
+                        currentWindow: true
+                    }, function(tabs) {
+                        // ...and send a request for the DOM info...
+                        chrome.tabs.sendMessage(
+                            tabs[0].id, { from: 'popup', subject: 'DOMInfo' },
+                            // ...also specifying a callback to be called 
+                            //    from the receiving end (content script)
+                            renderApp);
+
   });
 });

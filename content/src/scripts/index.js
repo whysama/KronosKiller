@@ -23,7 +23,7 @@ function getProjectList(oFrameDom) {
         oPeriod = getPeriod(oFrameDom);
     for (var i = oPeriod.start; i <= oPeriod.end; i++) {
         $("select[name='" + i + "'] option:not(:disabled)",oFrameDom).each(function() {
-            if ($(this).val() != "0" && $(this).val() != "") {
+            if ($(this).val() != "") { //$(this).val() != "0" && 0 is group name
                 aOptions.push({
                     id: $(this).val(),
                     text: $(this).text()
@@ -40,13 +40,12 @@ function getProjectList(oFrameDom) {
 chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 
   if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
-    var oFrameDom = window.frames["main"].document;
-    console.log(getProjectList(oFrameDom));
-    var domInfo = {
-      total:   document.querySelectorAll('*').length,
-      inputs:  document.querySelectorAll('input').length,
-      buttons: document.querySelectorAll('button').length
-    };
+    var oFrameDom = window.frames["main"].document,
+        domInfo = {
+          dom : oFrameDom,
+          projects : getProjectList(oFrameDom),
+          total:   document.querySelectorAll('*').length
+        };
     
     response(domInfo);
   
