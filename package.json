@@ -15,6 +15,7 @@
         "redux": "^3.0.4",
         "rc-calendar": "^7.6.7",
         "rc-select": "^6.7.3",
+        "react-day-picker": "^5.2.0",
         "jsonp": "^0.2.0",
         "querystring": "^0.2.0",
         "jquery": "^3.2.1"
