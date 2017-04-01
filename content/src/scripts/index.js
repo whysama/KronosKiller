@@ -13,9 +13,22 @@ function getPeriod(oFrameDom) {
         iDateStart = parseInt(sDate, 10),
         iDateEnd = iDateStart + 30;
     return {
+        year: sYear,
+        month: (parseInt(sMonth, 10) - 1).toString(),
         start: iDateStart,
         end: iDateEnd
     };
+}
+
+function getDisabledDates(oFrameDom) {
+    var oPeriod = getPeriod(oFrameDom),
+        aDisabledDates = [];
+    for (var i = oPeriod.start; i <= oPeriod.end; i++) {
+        if ($("select[name='" + i + "']",oFrameDom).length === 0) {
+            aDisabledDates.push(i.toString());
+        }
+    }
+    return aDisabledDates;
 }
 
 function getProjectList(oFrameDom) {
@@ -44,6 +57,8 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
         domInfo = {
           dom : oFrameDom,
           projects : getProjectList(oFrameDom),
+          period : getPeriod(oFrameDom),
+          disabled : getDisabledDates(oFrameDom),
           total:   document.querySelectorAll('*').length
         };
     

@@ -5,7 +5,7 @@ import App from './components/app/App';
 
 function renderApp(info) {
     render(
-        <App projects={info.projects}/>
+        <App projects={info.projects} period={info.period} disabled={info.disabled}/>
       , document.getElementById('app')
     );
 }
