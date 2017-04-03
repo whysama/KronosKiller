@@ -50,16 +50,32 @@ gulp.task('copy-manifest', ['clean'], () => {
         .pipe(gulp.dest('./build'));
 });
 
+gulp.task('copy-image16', ['clean'], () => {
+    return gulp.src('img/16.png')
+        .pipe(gulp.dest('./build'));
+});
+
+gulp.task('copy-image48', ['clean'], () => {
+    return gulp.src('img/48.png')
+        .pipe(gulp.dest('./build'));
+});
+
+gulp.task('copy-image128', ['clean'], () => {
+    return gulp.src('img/128.png')
+        .pipe(gulp.dest('./build'));
+});
+
 gulp.task('clean', (cb) => {
     rimraf('./build', cb);
 });
 
-gulp.task('build', ['copy-manifest', 'popup-js', 'popup-html', 'event-js', 'content-js']);
+gulp.task('build', ['copy-manifest', 'copy-image48', 'copy-image128', 'copy-image16', 'popup-js', 'popup-html', 'event-js', 'content-js']);
 
 gulp.task('watch', ['default'], () => {
     gulp.watch('popup/**/*', ['build']);
     gulp.watch('content/**/*', ['build']);
     gulp.watch('event/**/*', ['build']);
+    gulp.watch('img/*', ['build']);
 });
 
 gulp.task('default', ['build']);
