@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import DayPicker from '../day-picker/DayPicker';
+import Select from 'react-select';
 import moment from 'moment';
 import { DateUtils } from 'react-day-picker';
 //import {connect} from 'react-redux';
 import '../../../css/style.css';
+import 'react-select/dist/react-select.css';
 
 class App extends Component {
     constructor(props) {
@@ -11,10 +13,12 @@ class App extends Component {
         this.state = {
             projects : this.props.projects,
             period : this.props.period,
-            selectedDays : []
+            selectedDays : [],
+            selectedProject : ""
         }
         this.handleDayClick = this.handleDayClick.bind(this);
         this.disabledDays = this.disabledDays.bind(this);
+        this.handleProjectChange = this.handleProjectChange.bind(this);
     }
   
     handleClick(){
@@ -53,6 +57,10 @@ class App extends Component {
         return day.getDay() === 0 || day.getDay() === 6 || this.props.disabled.includes(moment(day).format("YYYYMMDD"));
     }
 
+    handleProjectChange(newProject){
+        this.setState({ selectedProject : newProject });
+    }
+
     render() {
         return (
             <div>
@@ -66,6 +74,16 @@ class App extends Component {
                         selectedDays = { this.state.selectedDays }
                         onDayClick = { this.handleDayClick }
                         />
+                </div>
+                <div>
+                    <Select
+                        autofocus
+                        simpleValue
+                        options={this.props.projects}
+                        name="selected-project"
+                        value={this.state.selectedProject}
+                        onChange={ this.handleProjectChange }
+                        searchable={this.state.searchable} />
                 </div>
             </div>
         );

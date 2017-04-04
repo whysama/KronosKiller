@@ -36,10 +36,11 @@ function getProjectList(oFrameDom) {
         oPeriod = getPeriod(oFrameDom);
     for (var i = oPeriod.start; i <= oPeriod.end; i++) {
         $("select[name='" + i + "'] option:not(:disabled)",oFrameDom).each(function() {
-            if ($(this).val() != "") { //$(this).val() != "0" && 0 is group name
+            if ($(this).val() != "") { //$(this).val() != "0" && => 0 is group name
                 aOptions.push({
                     id: $(this).val(),
-                    text: $(this).text()
+                    value: $(this).val(),
+                    label: $.trim($(this).text())
                 });
             }
         });
