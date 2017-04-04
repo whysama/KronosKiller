@@ -63,10 +63,7 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                <button className="app" onClick={() => this.handleClick()}>
-                    test
-                </button>
+            <div className="app">
                 <div className="day-picker">
                     <DayPicker
                         initialMonth={ new Date(this.props.period.year,this.props.period.month) } 
@@ -75,9 +72,8 @@ class App extends Component {
                         onDayClick = { this.handleDayClick }
                         />
                 </div>
-                <div>
+                <div className="project-select">
                     <Select
-                        autofocus
                         simpleValue
                         options={this.props.projects}
                         name="selected-project"
