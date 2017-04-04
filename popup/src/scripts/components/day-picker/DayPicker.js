@@ -35,7 +35,7 @@ export default class SelectMultipleDays extends React.Component {
 	        <div>
 	            <DayPicker
 	            	canChangeMonth = { false }
-	            	initialMonth={ new Date(this.props.period.year,this.props.period.month) }
+	            	initialMonth={ this.props.initialMonth }
 	            	disabledDays={ this.disabledDays }
 		            selectedDays = { this.state.selectedDays }
 	            	onDayClick = { this.handleDayClick }

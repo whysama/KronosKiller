@@ -24,7 +24,10 @@ class App extends Component {
                 test
             </button>
             <div className="day-picker">
-                <DayPicker period={this.state.period} disabled={this.state.disabled}/>
+                <DayPicker
+                    initialMonth={ new Date(this.props.period.year,this.props.period.month) } 
+                    disabled={this.state.disabled}
+                    />
             </div>
         </div>
     );
