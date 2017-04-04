@@ -65,6 +65,8 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     response(domInfo);
   
   }
+  if ((msg.from === 'popup') && (msg.subject === 'SelectDays')) {
+    console.log(msg);
+  }
 
 });
-

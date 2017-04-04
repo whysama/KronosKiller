@@ -23,15 +23,30 @@ class App extends Component {
 
     handleDayClick(day, { selected }){
         const { selectedDays } = this.state;
-            if (selected) {
-                const selectedIndex = selectedDays.findIndex(selectedDay =>
-                    DateUtils.isSameDay(selectedDay, day),
-                );
-                selectedDays.splice(selectedIndex, 1);
-            } else {
-                selectedDays.push(day);
+        let selectedDaysToSend = [];
+        if (selected) {
+            const selectedIndex = selectedDays.findIndex(selectedDay =>
+                DateUtils.isSameDay(selectedDay, day),
+            );
+            selectedDays.splice(selectedIndex, 1);
+        } else {
+            selectedDays.push(day);
+        }
+        this.setState({ selectedDays });
+
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        }, function(tabs) {
+            for (let i = 0; i < selectedDays.length; i++) {
+                selectedDaysToSend.push(moment(selectedDays[i]).format("YYYYMMDD"));
             }
-            this.setState({ selectedDays });
+            chrome.tabs.sendMessage(tabs[0].id, { 
+                from: 'popup', 
+                subject: 'SelectDays',
+                selectedDays: selectedDaysToSend
+            });
+        }.bind(this));
     }
 
     disabledDays(day){
