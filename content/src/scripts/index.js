@@ -52,7 +52,7 @@ function getProjectList(oFrameDom) {
 
 chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 
-  if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
+  if ((msg.from === 'popup') && (msg.subject === 'DOMInfo') && window.frames["main"]) {
     var oFrameDom = window.frames["main"].document,
         domInfo = {
           dom : oFrameDom,
@@ -65,8 +65,14 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     response(domInfo);
   
   }
-  if ((msg.from === 'popup') && (msg.subject === 'SelectDays')) {
-    console.log(msg);
+
+  if ((msg.from === 'popup') && (msg.subject === 'SelectDays') && window.frames["main"]) {
+    var oFrameDom = window.frames["main"].document,
+        aSelectedDays = msg.selectedDays;
+    $(oFrameDom).find("div.selected-day").removeClass("selected-day");
+    for (var i = 0; i < aSelectedDays.length; i++) {
+        $("select[name='" + aSelectedDays[i] + "']", oFrameDom).parent().addClass("selected-day");
+    }
   }
 
 });

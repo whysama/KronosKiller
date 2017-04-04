@@ -65,11 +65,16 @@ gulp.task('copy-image128', ['clean'], () => {
         .pipe(gulp.dest('./build'));
 });
 
+gulp.task('copy-css', ['clean'], () => {
+    return gulp.src('css/style.css')
+        .pipe(gulp.dest('./build'));
+});
+
 gulp.task('clean', (cb) => {
     rimraf('./build', cb);
 });
 
-gulp.task('build', ['copy-manifest', 'copy-image48', 'copy-image128', 'copy-image16', 'popup-js', 'popup-html', 'event-js', 'content-js']);
+gulp.task('build', ['copy-manifest', 'copy-image48', 'copy-image128', 'copy-image16', 'copy-css', 'popup-js', 'popup-html', 'event-js', 'content-js']);
 
 gulp.task('watch', ['default'], () => {
     gulp.watch('popup/**/*', ['build']);
