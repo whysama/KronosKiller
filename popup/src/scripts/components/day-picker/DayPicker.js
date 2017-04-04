@@ -1,29 +1,15 @@
 import React from 'react';
 import moment from 'moment';
-import DayPicker, { DateUtils } from 'react-day-picker';
+import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 export default class SelectMultipleDays extends React.Component {
     constructor(props) {
         super(props);
-        this.handleDayClick = this.handleDayClick.bind(this);
         this.disabledDays = this.disabledDays.bind(this);
         this.state = {
             selectedDays: [],
         };
-    }
-
-    handleDayClick(day, { selected }) {
-        const { selectedDays } = this.state;
-        if (selected) {
-            const selectedIndex = selectedDays.findIndex(selectedDay =>
-                DateUtils.isSameDay(selectedDay, day),
-            );
-            selectedDays.splice(selectedIndex, 1);
-        } else {
-            selectedDays.push(day);
-        }
-        this.setState({ selectedDays });
     }
 
     disabledDays(day){
@@ -37,8 +23,8 @@ export default class SelectMultipleDays extends React.Component {
 	            	canChangeMonth = { false }
 	            	initialMonth={ this.props.initialMonth }
 	            	disabledDays={ this.disabledDays }
-		            selectedDays = { this.state.selectedDays }
-	            	onDayClick = { this.handleDayClick }
+		            selectedDays = { this.props.selectedDays }
+	            	onDayClick = { this.props.onDayClick }
 	            /> 
 	        </div>
         );
