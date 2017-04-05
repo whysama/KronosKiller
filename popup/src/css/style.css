@@ -7,6 +7,16 @@
     flex-basis: 300px;
 }
 
-.project-select{
+.project{
+    display: flex;
     flex-basis: 350px;
+    flex-direction: column;
+}
+
+.project-textarea, .project-select{
+    margin: 1rem;
+}
+
+.project-textarea {
+    resize: none;
 }

@@ -70,12 +70,18 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
   if ((msg.from === 'popup') && (msg.subject === 'ContentAction') && window.frames["main"]) {
     var oFrameDom = window.frames["main"].document,
         aSelectedDays = msg.selectedDays,
-        sSelectedProject = msg.selectedProject;
-    //Set Selected Days / Projec
+        sSelectedProject = msg.selectedProject,
+        sText = msg.text.replace(/\n/g,' ');
+    console.log(sText);
+    //Clear Allchanges
     $(oFrameDom).find("div.selected-day").removeClass("selected-day");
+    $("select[name*='" + getPeriod(oFrameDom).year + "']", oFrameDom).val("");
+    $("input[name*='comment" + getPeriod(oFrameDom).year + "']", oFrameDom).val("");
+    //Set Selected Days / Projec
     for (var i = 0; i < aSelectedDays.length; i++) {
         $("select[name='" + aSelectedDays[i] + "']", oFrameDom).parent().addClass("selected-day");
         $("select[name='" + aSelectedDays[i] + "']", oFrameDom).val(sSelectedProject);
+        $("input[name='comment" + aSelectedDays[i] + "']", oFrameDom).val(sText);
     }
   }
 
