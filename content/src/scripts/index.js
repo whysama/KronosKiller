@@ -89,4 +89,9 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     }
   }
 
+  if ((msg.from === 'popup') && (msg.subject === 'Clear') && window.frames["main"]) {
+    var oFrameDom = window.frames["main"].document;
+    $(oFrameDom).find("div.selected-day").removeClass("selected-day");
+  }
+
 });
