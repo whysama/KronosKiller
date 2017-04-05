@@ -27,7 +27,6 @@ class App extends Component {
 
     handleDayClick(day, { selected }){
         const { selectedDays } = this.state;
-        let selectedDaysToSend = [];
         if (selected) {
             const selectedIndex = selectedDays.findIndex(selectedDay =>
                 DateUtils.isSameDay(selectedDay, day),
@@ -36,8 +35,22 @@ class App extends Component {
         } else {
             selectedDays.push(day);
         }
-        this.setState({ selectedDays });
+        this.setState({ selectedDays }, this.sendToContent);
+    }
 
+    disabledDays(day){
+        return day.getDay() === 0 || day.getDay() === 6 || this.props.disabled.includes(moment(day).format("YYYYMMDD"));
+    }
+
+    handleProjectChange(newProject){
+        this.setState({ selectedProject : newProject }, this.sendToContent);
+    }
+
+    sendToContent(){
+        const { selectedDays } = this.state,
+              { selectedProject } = this.state;
+        console.log(selectedProject);
+        let selectedDaysToSend = [];
         chrome.tabs.query({
             active: true,
             currentWindow: true
@@ -47,18 +60,10 @@ class App extends Component {
             }
             chrome.tabs.sendMessage(tabs[0].id, { 
                 from: 'popup', 
-                subject: 'SelectDays',
+                subject: 'ContentAction',
                 selectedDays: selectedDaysToSend
             });
         }.bind(this));
-    }
-
-    disabledDays(day){
-        return day.getDay() === 0 || day.getDay() === 6 || this.props.disabled.includes(moment(day).format("YYYYMMDD"));
-    }
-
-    handleProjectChange(newProject){
-        this.setState({ selectedProject : newProject });
     }
 
     render() {
@@ -76,7 +81,6 @@ class App extends Component {
                     <Select
                         simpleValue
                         options={this.props.projects}
-                        name="selected-project"
                         value={this.state.selectedProject}
                         onChange={ this.handleProjectChange }
                         searchable={this.state.searchable} />

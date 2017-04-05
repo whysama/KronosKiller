@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
   
   }
 
-  if ((msg.from === 'popup') && (msg.subject === 'SelectDays') && window.frames["main"]) {
+  if ((msg.from === 'popup') && (msg.subject === 'ContentAction') && window.frames["main"]) {
     var oFrameDom = window.frames["main"].document,
         aSelectedDays = msg.selectedDays;
     $(oFrameDom).find("div.selected-day").removeClass("selected-day");
