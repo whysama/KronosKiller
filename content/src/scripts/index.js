@@ -59,8 +59,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
           dom : oFrameDom,
           projects : getProjectList(oFrameDom),
           period : getPeriod(oFrameDom),
-          disabled : getDisabledDates(oFrameDom),
-          total:   document.querySelectorAll('*').length
+          disabled : getDisabledDates(oFrameDom)
         };
     
     response(domInfo);
@@ -71,17 +70,22 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     var oFrameDom = window.frames["main"].document,
         aSelectedDays = msg.selectedDays,
         sSelectedProject = msg.selectedProject,
-        sText = msg.text.replace(/\n/g,' ');
-    console.log(sText);
+        sText = msg.text.replace(/\n/g,' '),
+        sSelectedPlace = msg.selectedPlace;
     //Clear Allchanges
     $(oFrameDom).find("div.selected-day").removeClass("selected-day");
     $("select[name*='" + getPeriod(oFrameDom).year + "']", oFrameDom).val("");
     $("input[name*='comment" + getPeriod(oFrameDom).year + "']", oFrameDom).val("");
-    //Set Selected Days / Projec
+    $("input[name*='as" + getPeriod(oFrameDom).year + "']", oFrameDom).prop('checked', false);
+    $("input[name*='wfh" + getPeriod(oFrameDom).year + "']", oFrameDom).prop('checked', false);
+    //Set Selected Days / Project / Comments / Place
     for (var i = 0; i < aSelectedDays.length; i++) {
         $("select[name='" + aSelectedDays[i] + "']", oFrameDom).parent().addClass("selected-day");
         $("select[name='" + aSelectedDays[i] + "']", oFrameDom).val(sSelectedProject);
         $("input[name='comment" + aSelectedDays[i] + "']", oFrameDom).val(sText);
+        if (sSelectedPlace) {
+            $("input[name='"+ sSelectedPlace + aSelectedDays[i] + "']", oFrameDom).prop('checked', true);
+        }
     }
   }
 

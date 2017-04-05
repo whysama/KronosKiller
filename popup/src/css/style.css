@@ -20,3 +20,20 @@
 .project-textarea {
     resize: none;
 }
+
+.project-radio {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+}
+
+.project-radio-label {
+    line-height: 1.25;
+    font-size: 1.25rem;
+    margin-left: 1rem;
+}

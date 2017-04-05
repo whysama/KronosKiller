@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import DayPicker from '../day-picker/DayPicker';
 import Select from 'react-select';
+import Radio from 'rc-radio';
 import moment from 'moment';
 import { DateUtils } from 'react-day-picker';
 //import {connect} from 'react-redux';
 import '../../../css/style.css';
 import 'react-select/dist/react-select.css';
+import 'rc-radio/assets/index.css';
 
 class App extends Component {
     constructor(props) {
@@ -15,12 +17,14 @@ class App extends Component {
             period : this.props.period,
             selectedDays : [],
             selectedProject : "",
-            text : ""
+            text : "",
+            selectedPlace : ""
         }
         this.handleDayClick = this.handleDayClick.bind(this);
         this.disabledDays = this.disabledDays.bind(this);
         this.handleProjectChange = this.handleProjectChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
+        this.handlePlaceChange = this.handlePlaceChange.bind(this);
     }
   
     handleClick(){
@@ -52,12 +56,17 @@ class App extends Component {
         this.setState({text: event.target.value}, this.sendToContent);
     }
 
+    handlePlaceChange(event){
+        this.setState({selectedPlace: event.target.value}, this.sendToContent);
+    }
+
     sendToContent(){
         const { selectedDays } = this.state,
               { selectedProject } = this.state;
         let selectedDaysToSend = [],
             selectedProjectToSend = selectedProject,
-            text = this.state.text;
+            text = this.state.text,
+            selectedPlace = this.state.selectedPlace;
         chrome.tabs.query({
             active: true,
             currentWindow: true
@@ -70,12 +79,16 @@ class App extends Component {
                 subject: 'ContentAction',
                 selectedDays: selectedDaysToSend,
                 selectedProject : selectedProjectToSend,
-                text : text
+                text : text,
+                selectedPlace : selectedPlace
             });
         }.bind(this));
     }
 
     render() {
+        if (this.props.projects.length === 0) {
+            return (<h1 className="app-disabled">Kronos is completed.</h1>);
+        }
         return (
             <div className="app">
                 <div className="day-picker">
@@ -95,8 +108,22 @@ class App extends Component {
                             onChange={ this.handleProjectChange }
                             searchable={this.state.searchable} />
                     </div>
+                    <div className="project-radio">
+                        <div>
+                            <Radio value="as"
+                              checked = {this.state.selectedPlace === 'as'}
+                              onChange={this.handlePlaceChange}/>
+                            <span className="project-radio-label">Censio</span>
+                        </div>
+                        <div>
+                            <Radio value="wfh"
+                              checked = {this.state.selectedPlace === 'wfh'}
+                              onChange={this.handlePlaceChange}/>
+                            <span className="project-radio-label">Home</span>
+                        </div>
+                    </div>
                     <textarea 
-                        className="project-textarea" 
+                        className="project-textarea"
                         value={this.state.text} 
                         onChange={this.handleTextChange} 
                         rows="9"/>

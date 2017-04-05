@@ -19,7 +19,8 @@
         "jsonp": "^0.2.0",
         "querystring": "^0.2.0",
         "jquery": "^3.2.1",
-        "react-select" : ""
+        "react-select" : "",
+        "rc-radio" : ""
     },
     "devDependencies": {
         "autoprefixer-loader": "^3.1.0",
