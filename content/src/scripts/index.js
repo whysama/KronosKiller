@@ -69,10 +69,13 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 
   if ((msg.from === 'popup') && (msg.subject === 'ContentAction') && window.frames["main"]) {
     var oFrameDom = window.frames["main"].document,
-        aSelectedDays = msg.selectedDays;
+        aSelectedDays = msg.selectedDays,
+        sSelectedProject = msg.selectedProject;
+    //Set Selected Days / Projec
     $(oFrameDom).find("div.selected-day").removeClass("selected-day");
     for (var i = 0; i < aSelectedDays.length; i++) {
         $("select[name='" + aSelectedDays[i] + "']", oFrameDom).parent().addClass("selected-day");
+        $("select[name='" + aSelectedDays[i] + "']", oFrameDom).val(sSelectedProject);
     }
   }
 

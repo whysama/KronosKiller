@@ -49,8 +49,8 @@ class App extends Component {
     sendToContent(){
         const { selectedDays } = this.state,
               { selectedProject } = this.state;
-        console.log(selectedProject);
-        let selectedDaysToSend = [];
+        let selectedDaysToSend = [],
+            selectedProjectToSend = selectedProject;
         chrome.tabs.query({
             active: true,
             currentWindow: true
@@ -61,7 +61,8 @@ class App extends Component {
             chrome.tabs.sendMessage(tabs[0].id, { 
                 from: 'popup', 
                 subject: 'ContentAction',
-                selectedDays: selectedDaysToSend
+                selectedDays: selectedDaysToSend,
+                selectedProject : selectedProjectToSend
             });
         }.bind(this));
     }
