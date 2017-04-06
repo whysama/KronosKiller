@@ -16,20 +16,23 @@ window.addEventListener('DOMContentLoaded', function() {
         active: true,
         currentWindow: true
     }, function(tabs) {
-        chrome.tabs.sendMessage(
-            tabs[0].id, { from: 'popup', subject: 'DOMInfo' },
-            renderApp);
+        chrome.tabs.sendMessage(tabs[0].id, { from: 'popup', subject: 'DOMInfo' }, renderApp);
+    });
+
+    var port = chrome.runtime.connect({name: "敲门"});
+    port.postMessage({joke: "敲门"});
+    port.onMessage.addListener(function(msg) {
+      if (msg.question == "是谁？")
+        port.postMessage({answer: "女士"});
+      else if (msg.question == "哪位女士？")
+        port.postMessage({answer: "Bovary 女士"});
     });
 });
 
-window.onbeforeunload = function() {
-    return function(){
-        chrome.tabs.query({
-            active: true,
-            currentWindow: true
-        }, function(tabs) {
-            chrome.tabs.sendMessage(
-                tabs[0].id, { from: 'popup', subject: 'Clear' });
-        });
-    }
-};
+window.addEventListener("unload", function (event) {
+    // background.console.log(event);
+    background.console.log(id);
+    chrome.tabs.sendMessage(id, { from: 'popup', subject: 'Clear' }, function(response) {
+        console.log("GoodJob!");
+    });
+}, true);
