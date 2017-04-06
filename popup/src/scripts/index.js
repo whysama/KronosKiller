@@ -21,11 +21,3 @@ window.addEventListener('DOMContentLoaded', function() {
 
     chrome.runtime.connect({name: "Kronos"});
 });
-
-window.addEventListener("unload", function (event) {
-    // background.console.log(event);
-    background.console.log(id);
-    chrome.tabs.sendMessage(id, { from: 'popup', subject: 'Clear' }, function(response) {
-        console.log("GoodJob!");
-    });
-}, true);
