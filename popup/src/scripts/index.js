@@ -19,14 +19,7 @@ window.addEventListener('DOMContentLoaded', function() {
         chrome.tabs.sendMessage(tabs[0].id, { from: 'popup', subject: 'DOMInfo' }, renderApp);
     });
 
-    var port = chrome.runtime.connect({name: "敲门"});
-    port.postMessage({joke: "敲门"});
-    port.onMessage.addListener(function(msg) {
-      if (msg.question == "是谁？")
-        port.postMessage({answer: "女士"});
-      else if (msg.question == "哪位女士？")
-        port.postMessage({answer: "Bovary 女士"});
-    });
+    chrome.runtime.connect({name: "Kronos"});
 });
 
 window.addEventListener("unload", function (event) {

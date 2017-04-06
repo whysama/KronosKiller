@@ -1,8 +1,3 @@
-/*chrome.runtime.sendMessage({
-  from:    'content',
-  subject: 'showPageAction'
-});*/
-
 import $ from 'jquery';
 
 function getPeriod(oFrameDom) {
